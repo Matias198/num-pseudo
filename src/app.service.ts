@@ -1,89 +1,73 @@
 import { Injectable } from '@nestjs/common';
+import { CongFundService } from './servicios/cong-fund.service';  
+import { VonNeumanService } from './servicios/von-neuman.service';
 
 @Injectable()
 export class AppService { 
-  comprobarChiCuadrado(parametros): any {
-    const secuencia = parametros.secuencia;
-    const n = secuencia.toString().length;
+  constructor (private congService:CongFundService, private vonService:VonNeumanService){}
+  comprobarChiCuadrado(parametros:any): any { 
+    //parametros = JSON.parse(parametros)
+    let secuencia = "";
+    let mensaje:any  
+    if (parametros.cong){
+      mensaje = this.congService.crearSerie(parametros)
+      secuencia = mensaje.mensaje
+    }
+    if (parametros.von){
+      mensaje = this.vonService.crearSerie(parametros)
+      secuencia = mensaje.mensaje
+    }
     const k = 10;
-    const significancia = 0.10;
-    const npi = n/k;
-    const gl = k - 1;
-    let digitos = new Array(10)
-    for (let i = 0; i < digitos.length; i++) {
-      digitos[i] = ""  
+    const significancia = 0.01;
+    const gl = k - 1; 
+    let fo = Array(10);
+    for (let i = 0; i < 10; i++) {
+      fo[i] = 0
     }
-    for (let i = 0; i < n; i++) {
-      const element = secuencia.toString()[i]; 
-      switch (element) {
-        case "0":{
-          digitos[0] += element
-          break;
-        }
-        case "1":{
-          digitos[1] += element
-          break;
-        }
-        case "2":{
-          digitos[2] += element
-          break;
-        }
-        case "3":{
-          digitos[3] += element
-          break;
-        }
-        case "4":{
-          digitos[4] += element
-          break;
-        }
-        case "5":{
-          digitos[5] += element
-          break;
-        }
-        case "6":{
-          digitos[6] += element
-          break;
-        }
-        case "7":{
-          digitos[7] += element
-          break;
-        }
-        case "8":{
-          digitos[8] += element
-          break;
-        }
-        case "9":{
-          digitos[9] += element
-          break;
-        }
-        default:
-          break;
-      }
+    for (let i = 0; i < secuencia.length; i++) {
+      const element = secuencia.toString()[i];
+      let valor = parseInt(element) 
+      fo[valor]++;
+    }
+    let fe = Array(10)
+    for (let i = 0; i < 10; i++) {
+      fe[i] = 0
     } 
-    let f = Array(10);
-    let sumatoria = 0
-    for (let i = 0; i < k; i++) {
-      f[i] = ""
-      f[i] = (((digitos[i].length)-npi)*((digitos[i].length)-npi))/npi
-      //console.log((digitos[i].length))
-      //console.log((f[i]))
-      sumatoria += parseFloat(f[i])
+    let aux = 0
+    for (let i = 0; i < 10; i++) {
+      aux += fo[i]
+    } 
+    aux = aux * (1/10)
+    let chiCuadrado = 0;
+    for (let i = 0; i < fo.length; i++) {
+      const valor = fo[i];
+      chiCuadrado += Math.pow(valor - aux, 2) / aux
     }
+    const chiLimite = 21.6660; 
     let pest = "ES ALEATORIA"
-    if (sumatoria >  14.6837){
+    if (chiCuadrado >  chiLimite){
       pest = "NO ES ALEATORIA"
     }
-    const response = JSON.parse(
-      '{"significancia":'+significancia+', "chicuadrado":'+sumatoria+', "gl":'+gl+', "pest":"'+pest.toString()+'"}'
-    )
-    console.log(response)
+    let resp:any = {'significancia': significancia, 'chicuadrado': chiCuadrado, 'gl':gl, 'pest':pest} 
+    const response = JSON.parse(JSON.stringify(resp))
+    //console.log(response)
     return response
   }
 
   comprobarMonobits(parametros):any{
-    const secuencia = parametros.secuencia; 
+    //console.log("Comprobando por test de Monobits con parametros: ", parametros)
+    let secuencia = "";
+    let mensaje:any 
+    if (parametros.cong){
+      mensaje = this.congService.crearSerie(parametros)
+      secuencia = mensaje.mensaje
+    }
+    if (parametros.von){
+      mensaje = this.vonService.crearSerie(parametros)
+      secuencia = mensaje.mensaje
+    }
     const n = secuencia.toString().length;  
-    let sn = 0;
+    let sn = 0; 
     for (let i = 0; i < n; i++) {
       const element = secuencia.toString()[i]; 
       if (parseInt(element) >= 0 && parseInt(element) < 5){ 
@@ -92,9 +76,13 @@ export class AppService {
       }else{ 
         sn += 1
       }
-    }   
-    let sobs = Math.abs(sn)/Math.sqrt(n) 
-    let pvalor = 1-this.erfc(sobs/Math.sqrt(2)) 
+    } 
+    let sobs = Math.abs(sn)/Math.sqrt(n)  
+
+    let z = (sobs/Math.sqrt(2))
+    //console.log(z) 
+    let pvalor = 1-this.erf(z)
+
     let pest = "ES ALEATORIA"
     if (pvalor < 0.05){
       pest = "NO ES ALEATORIA"
@@ -102,20 +90,21 @@ export class AppService {
     const response = JSON.parse(
       '{"sn":'+sn+', "pvalor":'+pvalor+', "se":'+sobs+', "pest":"'+pest.toString()+'"}'
     )
-    console.log(response)
+    //console.log(response)
     return response
   }
+  erf(z) {
+    var n = 1000000; // Número de subintervalos
+    var deltaX = z / n;
+    var sum = 0;
   
-  erfc(x) {
-    var t = 1 / (1 + 0.5 * Math.abs(x));
-    var ans = 1 - t * Math.exp(-x*x - 1.26551223 + t * (1.00002368 +
-              t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 +
-              t * (0.27886807 + t * (-1.13520398 + t * (1.48851587 +
-              t * (-0.82215223 + t * 0.17087277)))))))));
-    if (x >= 0) {
-      return ans;
-    } else {
-      return 2 - ans;
+    for (var i = 0; i < n; i++) {
+      var t = i * deltaX;
+      var area = Math.exp(-t * t) * deltaX;
+      sum += area;
     }
+  
+    return (2 / Math.sqrt(Math.PI)) * sum;
   }
+
 }

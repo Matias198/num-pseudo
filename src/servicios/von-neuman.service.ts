@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { VonNeuman } from 'src/entity/VonNeuman';
+import { VonNeuman } from 'src/entidades/VonNeuman';
 import { AppDataSource } from '../main';
-import { Mensaje } from 'src/entity/Mensaje'; 
+import { Mensaje } from 'src/dto/Mensaje'; 
 
 @Injectable()
 export class VonNeumanService {
@@ -18,8 +18,10 @@ export class VonNeumanService {
   }
 
   crearSerie(parametros): any {
+    //console.log("Creando secuencia Von Neuman", parametros)  
     let x = parametros.semilla;
     let repeticiones = parametros.repeticiones;
+    //console.log("x: " + x + ", repeticiones: " + repeticiones)
     let resultados = [];
     let mensaje = new Mensaje();
     if (parseInt(repeticiones) > 0) {
@@ -44,7 +46,10 @@ export class VonNeumanService {
         resultados.push(x);
       }
       mensaje.codigo = 0;
-      mensaje.mensaje = resultados.toString();
+      mensaje.mensaje = resultados;
+      /*Array.from(resultados.toString().split(',')).forEach(e => {
+        mensaje.mensaje += e
+      });*/
       return mensaje;
     } else {
       mensaje.codigo = -1;

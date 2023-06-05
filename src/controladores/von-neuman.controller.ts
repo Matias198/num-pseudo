@@ -1,10 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { VonNeumanService } from './von-neuman.service'; 
-import { AppService } from 'src/app.service';
+import { VonNeumanService } from 'src/servicios/von-neuman.service';
 
 @Controller('von-neuman')
 export class VonNeumanController {
-     constructor(private vnService:VonNeumanService, private appService:AppService){
+     constructor(private vnService:VonNeumanService){
 
      }
      @Get('/') 

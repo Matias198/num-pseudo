@@ -2,8 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import "reflect-metadata"
 import { DataSource } from 'typeorm';
-import { VonNeuman } from './entity/VonNeuman';
-import { CongruenciaFundamental } from './entity/CongruenciaFundamental';
+import { VonNeuman } from './entidades/VonNeuman';
+import { CongruenciaFundamental } from './entidades/CongruenciaFundamental';
+import { NumerosGenerados } from './entidades/NumerosGenerados';
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   username: "admin",
   password: "admin",
   database: "database-nest",
-  entities: [VonNeuman, CongruenciaFundamental],
+  entities: [VonNeuman, CongruenciaFundamental, NumerosGenerados],
   synchronize: true,
   logging: false,
 })

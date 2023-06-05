@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CongruenciaFundamental } from 'src/entity/CongruenciaFundamental';
-import { Mensaje } from 'src/entity/Mensaje';
+import { Injectable } from '@nestjs/common'; 
+import { CongruenciaFundamental } from 'src/entidades/CongruenciaFundamental';
+import { Mensaje } from 'src/dto/Mensaje';
 import { AppDataSource } from 'src/main';
 
 @Injectable()
 export class CongFundService {
-    cfRepository = AppDataSource.getRepository(CongruenciaFundamental);
+  cfRepository = AppDataSource.getRepository(CongruenciaFundamental);
 
   findAll() {
     return this.cfRepository.find();
@@ -32,18 +32,23 @@ export class CongFundService {
     // Generar n números pseudoaleatorios adicionales
     for (var i = 2; i < n; i++) {
         var vii = ((a * secuencia[i - 1]) + (c * secuencia[i - 1 - k])) % m;
-        secuencia.push(vii);
+        secuencia.push(vii.toFixed(4));
     } 
     
     let mensaje = new Mensaje()
     mensaje.codigo = 0,
-    mensaje.mensaje = secuencia.toString();
+    mensaje.mensaje = secuencia;
+   /*
+    Array.from(secuencia.toString().split(',')).forEach(e => {
+      mensaje.mensaje += e
+    });*/
     return mensaje;    
   }
 
   guardarSerie(parametros) {
     const cf = new CongruenciaFundamental();
-    cf.secuencia = parametros.secuencia.toString();
+    let mensaje = JSON.parse(JSON.stringify(this.crearSerie(parametros)));
+    cf.secuencia = mensaje.mensaje;
     cf.vi = parametros.vi;
     cf.vik = parametros.vik;
     cf.a = parametros.a;
