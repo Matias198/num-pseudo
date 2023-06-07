@@ -24,9 +24,10 @@ export class AppService {
     for (let i = 0; i < 10; i++) {
       fo[i] = 0
     }
+    //for (let i = 0; i < secuencia.length; i++) {
     for (let i = 0; i < secuencia.length; i++) {
       const element = secuencia.toString()[i];
-      let valor = parseInt(element) 
+      let valor = parseFloat(element) 
       fo[valor]++;
     }
     let fe = Array(10)
@@ -69,8 +70,11 @@ export class AppService {
     const n = secuencia.toString().length;  
     let sn = 0; 
     for (let i = 0; i < n; i++) {
-      const element = secuencia.toString()[i]; 
-      if (parseInt(element) >= 0 && parseInt(element) < 5){ 
+      let element = secuencia.toString()[i]; 
+      if (parseFloat(element) < 1){
+        element = (parseFloat(element) * 10).toFixed(4)
+      }
+      if (parseFloat(element) >= 0 && parseFloat(element) < 5){ 
       //if (parseInt(element) != 1){ 
         sn -= 1
       }else{ 

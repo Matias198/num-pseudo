@@ -18,6 +18,7 @@ export class CongFundService {
   }
 
   crearSerie(parametros): any {
+    //console.log(parametros)
     let vi = parametros.vi
     let vik = parametros.vik
     let a = parametros.a
@@ -32,7 +33,7 @@ export class CongFundService {
     // Generar n números pseudoaleatorios adicionales
     for (var i = 2; i < n; i++) {
         var vii = ((a * secuencia[i - 1]) + (c * secuencia[i - 1 - k])) % m;
-        secuencia.push(vii.toFixed(4));
+        secuencia.push(vii);
     } 
     
     let mensaje = new Mensaje()

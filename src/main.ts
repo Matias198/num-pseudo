@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { VonNeuman } from './entidades/VonNeuman';
 import { CongruenciaFundamental } from './entidades/CongruenciaFundamental';
 import { NumerosGenerados } from './entidades/NumerosGenerados';
+import { Existencias } from './entidades/Existencias';
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
   username: "admin",
   password: "admin",
   database: "database-nest",
-  entities: [VonNeuman, CongruenciaFundamental, NumerosGenerados],
+  entities: [VonNeuman, CongruenciaFundamental, NumerosGenerados, Existencias],
   synchronize: true,
   logging: false,
 })
