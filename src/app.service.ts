@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CongFundService } from './servicios/cong-fund.service';  
 import { VonNeumanService } from './servicios/von-neuman.service';
+import * as jstat from 'jstat'; 
 
 @Injectable()
 export class AppService { 
@@ -44,6 +45,7 @@ export class AppService {
       const valor = fo[i];
       chiCuadrado += Math.pow(valor - aux, 2) / aux
     }
+    
     const chiLimite = 21.6660; 
     let pest = "ES ALEATORIA"
     if (chiCuadrado >  chiLimite){

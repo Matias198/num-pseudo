@@ -1,4 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import { NumerosGenerados } from "./NumerosGenerados"
 
 @Entity()
 export class Existencias {
@@ -6,21 +7,36 @@ export class Existencias {
     id: number
 
     @Column("text")
-    media: string
+    media: number
 
     @Column("text")
-    desvio: string
+    desvio: number
  
     @Column("text")
-    costo: string 
+    costo: number
     
     @Column("text")
-    metodo: string
-    
-    @Column("text")
-    semilla: string
+    dias: number
 
     @Column("text")
-    numeros: string[] 
+    IC: number
+
+    @Column("text")
+    P: number[]
     
+    @Column("text")
+    demora: number[]
+
+    @Column("text")
+    stock: number
+    
+    @Column("text")
+    comprarRango: number
+    
+    @Column("text")
+    critico: number   
+
+    @OneToOne(() => NumerosGenerados)
+    @JoinColumn()
+    idNumGen: NumerosGenerados 
 }
