@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
 import { Existencias } from 'src/entidades/Existencias';
 import { ExistenciasService } from 'src/servicios/existencias.service'; 
 

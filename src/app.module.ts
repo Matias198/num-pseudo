@@ -8,8 +8,7 @@ import { CongFundController } from './controladores/cong-fund.controller';
 import { NumGenController } from './controladores/num-gen.controller';
 import { NumGenService } from './servicios/num-gen.service';
 import { ExistenciasService } from './servicios/existencias.service';
-import { ExistenciasController } from './controladores/existencias.controller'; 
-import { ssStatistics } from '../node_modules/simple-statistics'; // Importa la biblioteca ss-statistics
+import { ExistenciasController } from './controladores/existencias.controller';  
 
 @Module({
   imports: [],
@@ -25,8 +24,7 @@ import { ssStatistics } from '../node_modules/simple-statistics'; // Importa la 
     VonNeumanService, 
     CongFundService, 
     NumGenService, 
-    ExistenciasService,
-    { provide: 'ssStatistics', useValue: ssStatistics }
+    ExistenciasService, 
   ],
 })
 export class AppModule {}
