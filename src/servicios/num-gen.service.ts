@@ -98,7 +98,7 @@ export class NumGenService {
                 testMono = true
             }
             salidaEmergencia++
-            if (salidaEmergencia >= 2000){
+            if (salidaEmergencia >= 100){
                 salir = true 
                 let mensaje = new Mensaje()
                 mensaje.codigo = "1"
@@ -182,9 +182,9 @@ export class NumGenService {
             while (!generarSemilla){ 
                 vi = parseFloat(Math.random().toFixed(4))
                 vik = parseFloat(Math.random().toFixed(4))
-                a = parseFloat(Math.random().toFixed(4))
-                c = parseFloat(Math.random().toFixed(4))
-                if (a > 0 && a < 1){
+                a = parseFloat((Math.random()*10).toFixed(4))
+                c = parseFloat((Math.random()*10).toFixed(4))
+                if (a > 0 && c > 0){ // && a < 1
                     if (vik >= 0 && vik < m){
                         if (vi > 0 && vi < m){
                             generarSemilla = true
@@ -223,7 +223,7 @@ export class NumGenService {
             }
 
             salidaEmergencia++
-            if (salidaEmergencia >= 2000){
+            if (salidaEmergencia >= 100){
                 salir = true 
                 let mensaje = new Mensaje()
                 mensaje.codigo = "1"

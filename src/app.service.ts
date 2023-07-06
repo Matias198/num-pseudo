@@ -69,7 +69,7 @@ export class AppService {
       mensaje = this.vonService.crearSerie(parametros)
       secuencia = mensaje.mensaje
     }
-    const n = secuencia.toString().length;  
+    const n = secuencia.length;  
     let sn = 0; 
     for (let i = 0; i < n; i++) {
       let element = secuencia.toString()[i]; 
